@@ -15,6 +15,7 @@ one of release conditions is met. There are 3 release conditions:
   ETHERSCAN_API_KEY=ABC123ABC123ABC123ABC123ABC123ABC1
   ROPSTEN_URL=https://eth-ropsten.alchemyapi.io/v2/<YOUR ALCHEMY KEY>
   PRIVATE_KEY=0xabc123abc123abc123abc123abc123abc123abc123abc123abc123abc123abc1
+  AGGREGATOR_CONTRACT=0xabc123abc123abc123abc123abc123abc123abc123abc123abc123abc123abc1
 
   ```
 
