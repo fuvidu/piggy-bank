@@ -179,7 +179,7 @@ describe("PiggyBank", () => {
         .withArgs(deployer.address, baseAmount);
     });
 
-    it("should allow to withdraw only matched amount", async () => {
+    it("should allow to withdraw all matched amount", async () => {
       await piggyBankContract.deposit(
         duration,
         takeProfitPercent,
