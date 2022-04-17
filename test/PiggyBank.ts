@@ -9,4 +9,6 @@ export default interface PiggyBank extends Contract {
   ): Promise<ContractTransaction>;
 
   withdraw(): Promise<ContractTransaction>;
+
+  getLockedAmount(): Promise<BigNumber>;
 }

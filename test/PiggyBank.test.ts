@@ -1,5 +1,6 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
+import { BigNumber } from "ethers";
 import { ethers } from "hardhat";
 import Aggregator from "./Aggregator";
 import PiggyBank from "./PiggyBank";
@@ -171,12 +172,15 @@ describe("PiggyBank", () => {
         takeProfitPercent,
         stopLossPercent,
         {
-          value: baseAmount,
+          value: baseAmount.mul(2),
         }
       );
       await expect(piggyBankContract.withdraw())
         .to.emit(piggyBankContract, "Withdrawn")
         .withArgs(deployer.address, baseAmount);
+      expect(await piggyBankContract.getLockedAmount()).to.equals(
+        baseAmount.mul(2)
+      );
     });
 
     it("should allow to withdraw all matched amount", async () => {
@@ -204,6 +208,9 @@ describe("PiggyBank", () => {
       await expect(piggyBankContract.withdraw())
         .to.emit(piggyBankContract, "Withdrawn")
         .withArgs(deployer.address, baseAmount.mul(2));
+      expect(await piggyBankContract.getLockedAmount()).to.equals(
+        BigNumber.from(0)
+      );
     });
   });
 });

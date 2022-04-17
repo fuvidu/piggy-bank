@@ -107,6 +107,31 @@ contract PiggyBank {
     }
 
     /**
+     * @notice Withdraw money in base currency when one of withdrawable condition is met.
+     * @return Whether money is withdrawn successfully
+     */
+    function withdraw() external returns (bool) {
+        uint256 withdrawableAmount = 0;
+
+        for (uint256 i = 0; i < balances[msg.sender].length; i++) {
+            uint256 amount = getWithdrawableAmountAt(msg.sender, i);
+            /// Reset balance at index if it is withdrawn
+            if (amount > 0) {
+                withdrawableAmount += amount;
+                delete balances[msg.sender][i];
+            }
+        }
+
+        require(withdrawableAmount > 0, "PiggyBank: Not withdrawable");
+
+        (bool sent, ) = payable(msg.sender).call{value: withdrawableAmount}("");
+        require(sent, "PiggyBank: Withdraw failed");
+
+        emit Withdrawn(msg.sender, withdrawableAmount);
+        return true;
+    }
+
+    /**
      @dev Get the latest price of base currency
      @return price The current price from oracle
      */
@@ -130,28 +155,13 @@ contract PiggyBank {
     }
 
     /**
-     * @notice Withdraw money in base currency when one of withdrawable condition is met.
-     * @return Whether money is withdrawn successfully
+     * @dev Get locked amount in base currency
+     * @return lockedAmount Locked amount in base currency
      */
-    function withdraw() external returns (bool) {
-        uint256 withdrawableAmount = 0;
-
+    function getLockedAmount() public view returns (uint256 lockedAmount) {
         for (uint256 i = 0; i < balances[msg.sender].length; i++) {
-            uint256 amount = getWithdrawableAmountAt(msg.sender, i);
-            /// Reset balance at index if it is withdrawn
-            if (amount > 0) {
-                withdrawableAmount += amount;
-                delete balances[msg.sender][i];
-            }
+            lockedAmount += balances[msg.sender][i].baseAmount;
         }
-
-        require(withdrawableAmount > 0, "PiggyBank: Not withdrawable");
-
-        (bool sent, ) = payable(msg.sender).call{value: withdrawableAmount}("");
-        require(sent, "PiggyBank: Withdraw failed");
-
-        emit Withdrawn(msg.sender, withdrawableAmount);
-        return true;
     }
 
     /**
