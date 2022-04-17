@@ -5,6 +5,9 @@
 // Runtime Environment's members available in the global scope.
 import { ethers } from "hardhat";
 
+import * as dotenv from "dotenv";
+dotenv.config();
+
 async function main() {
   // Hardhat always runs the compile task when running scripts with its command
   // line interface.
@@ -14,12 +17,12 @@ async function main() {
   // await hre.run('compile');
 
   // We get the contract to deploy
-  const Greeter = await ethers.getContractFactory("Greeter");
-  const greeter = await Greeter.deploy("Hello, Hardhat!");
+  let piggyBankContract = await (
+    await ethers.getContractFactory("PiggyBank")
+  ).deploy(process.env.AGGREGATOR_CONTRACT || "");
+  await piggyBankContract.deployed();
 
-  await greeter.deployed();
-
-  console.log("Greeter deployed to:", greeter.address);
+  console.log("PiggyBank deployed to:", piggyBankContract.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

@@ -24,12 +24,12 @@ describe("PiggyBank", () => {
     aggregatorContract = await (
       await ethers.getContractFactory("MockAggregator")
     ).deploy();
-    await aggregatorContract.deployed;
+    await aggregatorContract.deployed();
 
     piggyBankContract = await (
       await ethers.getContractFactory("PiggyBank")
     ).deploy(aggregatorContract.address);
-    await piggyBankContract.deployed;
+    await piggyBankContract.deployed();
   });
 
   describe("deposit", () => {

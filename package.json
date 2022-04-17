@@ -1,5 +1,9 @@
 {
-  "name": "hardhat-project",
+  "name": "piggy-bank",
+  "scripts": {
+    "test": "hardhat test",
+    "deploy": "hardhat run scripts/deploy.ts"
+  },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-etherscan": "^3.0.3",
